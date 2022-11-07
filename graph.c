@@ -126,7 +126,7 @@ int createvert(struct graph *list, char *find)
  * 
  * @param list the list we are printing out.
  */
-void printgraphv(struct graph *list)
+void printverticies(struct graph *list)
 {
         struct graph *cur = list;
         while(cur != NULL){
@@ -135,20 +135,29 @@ void printgraphv(struct graph *list)
         }
 }
 
-
-void printgraphve(struct graph *list)
+/**
+ * @brief prints out every veritcy and their edges.
+ * 
+ * @param list all of the verticies we have.
+ */
+void printgraphall(struct graph *list)
 {
         struct graph *cur = list;
-        struct verticy *ver = list->vert;
+        struct verticy *ver = NULL;
         struct edge *edg = NULL;
         while (cur != NULL){
+                // Assigns the new verticy
+                ver = cur->vert;
                 print("%s\n", ver->key);
+                // Assigns the edges of the new verticy.
                 edg = ver->egdes;
+                // goes through the linked list of edges.
                 while(edg != NULL){
                         print("\t-->%s\n", edg->locs->key);
                         edg = edg->next;
                 }
-
+                // Updates the current node we are working on.
+                cur = cur->next;
         }
         
 }
