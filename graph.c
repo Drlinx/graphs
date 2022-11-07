@@ -22,6 +22,7 @@
 
 struct edge {
         struct verticy *locs;
+        struct edge *next;
 };
 
 
@@ -52,3 +53,47 @@ int main ()
 }
 
 
+/**
+ * @brief initiates a new member in the list containing the graph members.
+ * 
+ * @param addon a newly made veritcy we are making.
+ * @return the location of the new graph member which will be appended on.
+ */
+struct graph *initgraph(struct verticy *addon)
+{
+        struct graph *new = malloc(sizeof(struct graph));
+        new->next = NULL;
+        new->vert = addon;
+        return new;
+}
+
+
+/**
+ * @brief inits a verticy for the graph.
+ * 
+ * @return the location of the new verticy.
+ */
+struct verticy *initvert(void)
+{
+        struct verticy *new = malloc(sizeof(struct verticy));
+        char *s = malloc(sizeof(char) * 128);
+        fgets(s, 128, stdin);   
+        new->key = s;
+        new->egdes = NULL;
+        return new;
+}
+
+
+/**
+ * @brief creates a new edge that we will add to our verticy.
+ * 
+ * @param connect what verticy we are connecting.
+ * @return the location of the newly created edge.
+ */
+struct edge *initedge(struct verticy *connect)
+{
+        struct edge *new = malloc(sizeof(struct edge));
+        new->next = NULL;
+        new->locs = connect;
+        return new;
+}
