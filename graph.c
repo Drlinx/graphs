@@ -44,9 +44,9 @@ struct graph {
 
 int main ()
 {
-        struct graph list;
-        list.vert = NULL;
-        list.next = NULL;
+        struct graph *list = malloc(sizeof(struct graph));
+        list->vert = NULL;
+        list->next = NULL;
 
         
         return 0;
@@ -73,11 +73,9 @@ struct graph *initgraph(struct verticy *addon)
  * 
  * @return the location of the new verticy.
  */
-struct verticy *initvert(void)
+struct verticy *initvert(char *s)
 {
-        struct verticy *new = malloc(sizeof(struct verticy));
-        char *s = malloc(sizeof(char) * 128);
-        fgets(s, 128, stdin);   
+        struct verticy *new = malloc(sizeof(struct verticy)); 
         new->key = s;
         new->egdes = NULL;
         return new;
@@ -96,4 +94,61 @@ struct edge *initedge(struct verticy *connect)
         new->next = NULL;
         new->locs = connect;
         return new;
+}
+
+
+/**
+ * @brief creates a new veritcy for the graph. Expands the linked list at the
+ * same time.
+ * 
+ * @param list the list we are appending this to.
+ * @param find the key for the verticy.
+ * @return an exist status.
+ * 
+ */
+int createvert(struct graph *list, char *find)
+{
+        struct graph *cur = list;
+        while(cur->next != NULL){
+                if(cur->vert->key == find){
+                        printf("Key already exists\n");
+                        return 1;
+                }
+        }
+        struct graph *new = initgraph(initvert(find));
+        cur->next = new;
+        return 0;
+}
+
+
+/**
+ * @brief prints out the element within a graph.
+ * 
+ * @param list the list we are printing out.
+ */
+void printgraphv(struct graph *list)
+{
+        struct graph *cur = list;
+        while(cur != NULL){
+                print("%s\n", cur->vert->key);
+                cur = cur->next;
+        }
+}
+
+
+void printgraphve(struct graph *list)
+{
+        struct graph *cur = list;
+        struct verticy *ver = list->vert;
+        struct edge *edg = NULL;
+        while (cur != NULL){
+                print("%s\n", ver->key);
+                edg = ver->egdes;
+                while(edg != NULL){
+                        print("\t-->%s\n", edg->locs->key);
+                        edg = edg->next;
+                }
+
+        }
+        
 }
