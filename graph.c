@@ -48,8 +48,6 @@ int main ()
         struct graph *list = malloc(sizeof(struct graph));
         list->vert = NULL;
         list->next = NULL;
-
-        
         return 0;
 }
 
