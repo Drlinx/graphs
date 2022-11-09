@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 struct edge {
@@ -176,4 +177,57 @@ void printvert(struct verticy *vert)
                 print("\t-->%s\n", edg->locs->key);
                 edg = edg->next;
         }
+}
+
+
+/**
+ * @brief removes the new line of a given string.
+ * 
+ * @param s the string we are editing.
+ */
+void nlrm(char *s)
+{
+        for(int i = 0; s[i] != '\0'; i++){
+                if(s[i] == '\n'){
+                        s[i] == '\0';
+                        break;
+                }
+        }
+}
+
+
+/**
+ * @brief gets an input for a characterized message.
+ * 
+ * @return the message with the new line removed.
+ */
+char *get_input(void)
+{
+        char *z = malloc(sizeof(char) * 128);
+        printf("enter the message: ");
+        fgets(z, 128, stdin);
+        nl_remove(z);
+        return z;
+}
+
+
+/**
+ * @brief finds a verticy we are going to be working with.
+ * 
+ * @param list the list of verticies we have.
+ * @param s the string we are looking for
+ * 
+ * @return verticy we found.
+ */
+struct verticy *searchvert(struct graph *list, char *s)
+{
+        struct graph *cur = list;
+        while(cur != NULL){
+                if(strcmp(cur->vert->key, s)){
+                        return cur->vert;
+                }
+                cur = cur->next;
+        }
+        printf("Verticy does not exist\n");
+        return NULL;
 }
