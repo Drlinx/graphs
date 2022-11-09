@@ -161,3 +161,19 @@ void printgraphall(struct graph *list)
         }
         
 }
+
+
+/**
+ * @brief prints a specified verticy and all of its edges.
+ * 
+ * @param vert the specified verticy
+ */
+void printvert(struct verticy *vert)
+{
+        struct edge *edg = vert->egdes;
+        print("%s\n", vert->key);
+        while(edg != NULL){
+                print("\t-->%s\n", edg->locs->key);
+                edg = edg->next;
+        }
+}
