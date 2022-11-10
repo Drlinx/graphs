@@ -48,7 +48,25 @@ int main ()
         struct graph *list = malloc(sizeof(struct graph));
         list->vert = NULL;
         list->next = NULL;
+        char inputs = 'a';
+        help();
+        while(inputs != 'e'){
+                print("What opetion would you like to perform(Use H for help): ");
+        }
         return 0;
+}
+
+
+void help()
+{
+        print("H) prints out a help menu\n");
+        print("A) Adds a new verticy to the graph\n");
+        print("E) adds a new edge to a requested verticy\n");
+        print("P) Prints out all the verticies and their edges\n");
+        print("V) Prints out all the verticies\n");
+        print("S) Prints a specificied verticy and its edges\n");
+        print("B) Does a breadth first search.\n");
+        print("E) Exits the program\n");
 }
 
 
@@ -109,7 +127,7 @@ int createvert(struct graph *list, char *find)
 {
         struct graph *cur = list;
         while(cur->next != NULL){
-                if(cur->vert->key == find){
+                if(strcmp(cur->vert->key, find)){
                         printf("Key already exists\n");
                         return 1;
                 }
