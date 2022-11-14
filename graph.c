@@ -47,19 +47,22 @@ struct graph {
 int main ()
 {
         struct graph *list = malloc(sizeof(struct graph));
-        printf("Before getting started lets create an initial veritcy.\n");
+        printf("Before getting started lets create an initial veritcy: \n");
         list->vert = initvert(get_input);
         list->next = NULL;
         char inputs = 'a';
         //Grabs any required user inputs.
         char *longinp = malloc(128);
-        // Mainly for using the search function.
-        struct verticy *temp;
-        struct graph *cur;
+        char *secinp = malloc(128);
+        // Tempory variables.
+        struct verticy *temp, *extra;
+        struct graph *curen;
+        struct edge *use;
         help();
         while(inputs != 'e'){
-                cur = list;
-                print("What option would you like to perform(Use H for help): ");
+                curen = list;
+                temp = NULL;
+                printf("What option would you like to perform(Use H for help): ");
                 fgets(longinp,128,stdin);
                 inputs = longinp[0];
                 switch(inputs){
@@ -69,14 +72,36 @@ int main ()
                                 break;
                         case('A'):
                         case('a'):
-                                while(cur->next != NULL){
-                                        cur = cur->next;
+                                while(curen->next != NULL){
+                                        curen = curen->next;
                                 }
-                                cur->next = initgraph(initvert(get_input()));
+                                printf("What is the new verticy we are creating: ");
+                                curen->next = initgraph(initvert(get_input()));
                                 break;
                         case('N'):
                         case('n'):
-
+                                //Getting user input.
+                                printf("Enter the node we are attaching to: ");
+                                longinp = get_input();
+                                temp = searchvert(list, inputs);
+                                printf("What are we connecting it to: ");
+                                secinp = get_input();
+                                extra = searchvert(list, secinp);
+                                if(extra == NULL || temp == NULL){
+                                        printf("Error one of your inputs do not exist");
+                                } else {
+                                        use = temp->egdes;
+                                        // If it has no edges adds the first edge.
+                                        if (use == NULL){
+                                                temp->egdes = initedge(extra);
+                                        //Otherwise finds the newest edges.
+                                        } else{
+                                                while(use->next != NULL){
+                                                        use = use->next;
+                                                }
+                                                use->next = initedge(extra);
+                                        }
+                                }
                                 break;
                         case('P'):
                         case('p'):
@@ -263,7 +288,6 @@ void nlrm(char *s)
 char *get_input(void)
 {
         char *z = malloc(sizeof(char) * 128);
-        printf("enter the graphs key: ");
         fgets(z, 128, stdin);
         nl_remove(z);
         return z;
