@@ -7,7 +7,8 @@
  * 
  * Assignment: graphs
  * 
- * @brief A working graph.
+ * @brief A working graph with various functions but the most important one is
+ * breath search. You can also add and print other nodes.
  * 
  * @detail
  * 
@@ -46,12 +47,60 @@ struct graph {
 int main ()
 {
         struct graph *list = malloc(sizeof(struct graph));
-        list->vert = NULL;
+        printf("Before getting started lets create an initial veritcy.\n");
+        list->vert = initvert(get_input);
         list->next = NULL;
         char inputs = 'a';
+        //Grabs any required user inputs.
+        char *longinp = malloc(128);
+        // Mainly for using the search function.
+        struct verticy *temp;
         help();
         while(inputs != 'e'){
-                print("What opetion would you like to perform(Use H for help): ");
+                print("What option would you like to perform(Use H for help): ");
+                fgets(longinp,128,stdin);
+                inputs = longinp[0];
+                switch(inputs){
+                        case('H'):
+                        case('h'):
+                                help();
+                                break;
+                        case('A'):
+                        case('a'):
+                                break;
+                        case('N'):
+                        case('n'):
+
+                                break;
+                        case('P'):
+                        case('p'):
+                                printgraphall(list);
+                                break;
+                        case('V'):
+                        case('v'):
+                                printverticies(list);
+                                break;
+                        case('S'):
+                        case('s'):
+                                printf("For the graph we are searching for.\n");
+                                fgets(longinp, 128, stdin);
+                                nl_remove(longinp);
+                                temp = searchvert(list, longinp);
+                                if (temp != NULL){
+                                        printvert(temp);
+                                } else {
+                                        printf("Error | Node does not exist\n");
+                                }
+                                break;
+                        case('B'):
+                        case('b'):
+
+                                break;
+                        case('e'):
+                        case('E'):
+                                inputs = 'e';
+                                break;
+                }
         }
         return 0;
 }
@@ -61,7 +110,7 @@ void help()
 {
         print("H) prints out a help menu\n");
         print("A) Adds a new verticy to the graph\n");
-        print("E) adds a new edge to a requested verticy\n");
+        print("N) adds a new edge to a requested verticy\n");
         print("P) Prints out all the verticies and their edges\n");
         print("V) Prints out all the verticies\n");
         print("S) Prints a specificied verticy and its edges\n");
@@ -160,24 +209,12 @@ void printverticies(struct graph *list)
 void printgraphall(struct graph *list)
 {
         struct graph *cur = list;
-        struct verticy *ver = NULL;
-        struct edge *edg = NULL;
         while (cur != NULL){
-                // Assigns the new verticy
-                ver = cur->vert;
-                print("%s\n", ver->key);
-                // Assigns the edges of the new verticy.
-                edg = ver->egdes;
-                // goes through the linked list of edges.
-                while(edg != NULL){
-                        print("\t-->%s\n", edg->locs->key);
-                        edg = edg->next;
-                }
-                // Updates the current node we are working on.
+                printvert(cur->vert);
                 cur = cur->next;
         }
-        
 }
+        
 
 
 /**
@@ -220,7 +257,7 @@ void nlrm(char *s)
 char *get_input(void)
 {
         char *z = malloc(sizeof(char) * 128);
-        printf("enter the message: ");
+        printf("enter the graphs key: ");
         fgets(z, 128, stdin);
         nl_remove(z);
         return z;
