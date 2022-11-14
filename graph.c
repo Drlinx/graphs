@@ -55,8 +55,10 @@ int main ()
         char *longinp = malloc(128);
         // Mainly for using the search function.
         struct verticy *temp;
+        struct graph *cur;
         help();
         while(inputs != 'e'){
+                cur = list;
                 print("What option would you like to perform(Use H for help): ");
                 fgets(longinp,128,stdin);
                 inputs = longinp[0];
@@ -67,6 +69,10 @@ int main ()
                                 break;
                         case('A'):
                         case('a'):
+                                while(cur->next != NULL){
+                                        cur = cur->next;
+                                }
+                                cur->next = initgraph(initvert(get_input()));
                                 break;
                         case('N'):
                         case('n'):
