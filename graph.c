@@ -44,6 +44,19 @@ struct graph {
 };
 
 
+void help();
+struct graph *initgraph(struct verticy *addon);
+struct verticy *initvert(char *s);
+struct edge *initedge(struct verticy *connect);
+int createvert(struct graph *list, char *find);
+void printverticies(struct graph *list);
+void printgraphall(struct graph *list);
+void printvert(struct verticy *vert);
+void nlrm(char *s);
+char *get_input(void);
+struct verticy *searchvert(struct graph *list, char *s);
+
+
 int main ()
 {
         struct graph *list = malloc(sizeof(struct graph));
