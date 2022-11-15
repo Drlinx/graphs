@@ -61,7 +61,7 @@ int main ()
 {
         struct graph *list = malloc(sizeof(struct graph));
         printf("Before getting started lets create an initial veritcy: \n");
-        list->vert = initvert(get_input);
+        list->vert = initvert(get_input());
         list->next = NULL;
         char inputs = 'a';
         //Grabs any required user inputs.
@@ -96,7 +96,7 @@ int main ()
                                 //Getting user input.
                                 printf("Enter the node we are attaching to: ");
                                 longinp = get_input();
-                                temp = searchvert(list, inputs);
+                                temp = searchvert(list, longinp);
                                 printf("What are we connecting it to: ");
                                 secinp = get_input();
                                 extra = searchvert(list, secinp);
@@ -128,7 +128,7 @@ int main ()
                         case('s'):
                                 printf("For the graph we are searching for.\n");
                                 fgets(longinp, 128, stdin);
-                                nl_remove(longinp);
+                                nlrm(longinp);
                                 temp = searchvert(list, longinp);
                                 if (temp != NULL){
                                         printvert(temp);
@@ -152,14 +152,14 @@ int main ()
 
 void help()
 {
-        print("H) prints out a help menu\n");
-        print("A) Adds a new verticy to the graph\n");
-        print("N) adds a new edge to a requested verticy\n");
-        print("P) Prints out all the verticies and their edges\n");
-        print("V) Prints out all the verticies\n");
-        print("S) Prints a specificied verticy and its edges\n");
-        print("B) Does a breadth first search.\n");
-        print("E) Exits the program\n");
+        printf("H) prints out a help menu\n");
+        printf("A) Adds a new verticy to the graph\n");
+        printf("N) adds a new edge to a requested verticy\n");
+        printf("P) Prints out all the verticies and their edges\n");
+        printf("V) Prints out all the verticies\n");
+        printf("S) Prints a specificied verticy and its edges\n");
+        printf("B) Does a breadth first search.\n");
+        printf("E) Exits the program\n");
 }
 
 
@@ -240,7 +240,7 @@ void printverticies(struct graph *list)
 {
         struct graph *cur = list;
         while(cur != NULL){
-                print("%s\n", cur->vert->key);
+                printf("%s\n", cur->vert->key);
                 cur = cur->next;
         }
 }
@@ -269,9 +269,9 @@ void printgraphall(struct graph *list)
 void printvert(struct verticy *vert)
 {
         struct edge *edg = vert->egdes;
-        print("%s\n", vert->key);
+        printf("%s\n", vert->key);
         while(edg != NULL){
-                print("\t-->%s\n", edg->locs->key);
+                printf("\t-->%s\n", edg->locs->key);
                 edg = edg->next;
         }
 }
@@ -302,7 +302,7 @@ char *get_input(void)
 {
         char *z = malloc(sizeof(char) * 128);
         fgets(z, 128, stdin);
-        nl_remove(z);
+        nlrm(z);
         return z;
 }
 
