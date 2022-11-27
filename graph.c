@@ -10,7 +10,7 @@
  * @brief A working graph with various functions but the most important one is
  * breath search. You can also add and print other nodes.
  * 
- * @detail
+ * @detail Free memory will not exist after you add enough verticies.
  * 
  * @bugs none
  * 
@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-enum color {WHITE = 0, GRAY, BLACK};
+enum color {UNEXPLORED = 0, EXPLORING, EXPLORED};
 
 struct edge {
         struct verticy *locs;
@@ -48,12 +48,12 @@ struct graph {
 
 struct items {
         char *entry;
-        struct bdsf *next;
+        struct items *next;
 };
 
 
 struct queue {
-        struct edge *loc;
+        struct verticy *loc;
         struct queue *next;
 };
 
@@ -202,7 +202,7 @@ struct verticy *initvert(char *s)
         struct verticy *new = malloc(sizeof(struct verticy)); 
         new->key = s;
         new->egdes = NULL;
-        new->col = WHITE;
+        new->col = UNEXPLORED;
         return new;
 }
 
@@ -233,7 +233,7 @@ void colorreset(struct graph *list)
         struct graph *nav = list;
         while(nav != NULL){
                 cur = nav->vert;
-                cur->col = WHITE;
+                cur->col = UNEXPLORED;
                 nav = nav->next;
         }
 }
@@ -245,7 +245,7 @@ void colorreset(struct graph *list)
  * @param spot the edge we are appending into the queue.
  * @return the newly created queue element.
  */
-struct queue *initqueue(struct edge *spot)
+struct queue *initqueue(struct verticy *spot)
 {
         struct queue *new = malloc(sizeof(struct queue));
         new->loc = spot;
@@ -389,4 +389,119 @@ struct verticy *searchvert(struct graph *list, char *s)
         }
         printf("Verticy does not exist\n");
         return NULL;
+}
+
+
+
+int breadthfs(struct verticy *start, struct verticy *end)
+{
+        //Head of queue
+        struct queue *find = initqueue(start);
+        //Tail of queue
+        struct queue *cur = find;
+        //Node we are performing the BFS on.
+        struct queue *inc = find;
+        //For searching at the destinations.
+        struct edge *edg;
+        while(inc != end || inc != NULL){
+                inc->loc->col = EXPLORING;
+                //Adds each element to the key if they are unexplored.
+                while(edg != NULL){
+                        if(edg->locs->col == UNEXPLORED){
+                                cur->next = initqueue(edg->locs);
+                                cur = cur->next;
+                        }
+                        edg = edg->next;
+                }
+                //Sets as explored.
+                inc->loc->col = EXPLORED;
+                inc = inc->next;
+        }
+        if (inc == NULL)
+                return 0;
+        printbfspath(find, end, start);
+        return 1;
+}
+
+
+/**
+ * @brief prints out the result of the breadth first search. 
+ * 
+ * @param head the head of the queue that holds the bfs data.
+ * @param end the node we are finding.
+ * @param start the node we are starting from.
+ */
+void printbfspath(struct queue *head, struct verticy *end, struct verticy *start)
+{
+        struct items *path = inititem(end->key);
+        struct items *temp = path;
+        struct queue *nav = head;
+        struct queue *tail;
+        // Finds the tail.
+        while (nav->next != NULL){
+                nav = nav->next;
+        }
+        tail = nav;
+        nav = head;
+        while(!strcomp(temp->entry, start->key) || nav == tail){
+                nav = nav->next;
+                
+                if(comppaths(temp->entry, nav->loc->key) == 1){
+                        temp->next = inititem(nav->loc->key);
+                        temp = temp->next;
+                        nav = head;
+                }
+        }
+        temp = path;
+        // Finds the length of the list;
+        int i = 0;
+        while (temp != NULL){
+                i++;
+                temp = temp->next;
+        }
+        itemsprint(path, i - 1);
+}
+
+
+/**
+ * @brief compares the edges to the node we are looking for.
+ * 
+ * @param key the key we are looking for
+ * @param comp the verticy we are comparing the edges to.
+ * @return the success case.
+ */
+int comppaths(char *key, struct verticy *comp)
+{
+        struct edge *edg = comp->egdes;
+        while(edg != NULL){
+                if (strcomp(edg->locs->key, key)){
+                        // Verticy found.
+                        return 1;
+                }
+                edg = edg->next;
+        }
+        // Verticy not found.
+        return 0;
+}
+
+
+/**
+ * @brief Prints the list in reverse. Due to the fact we build the list from
+ * end to start.
+ * 
+ * @param path the path to find our verticy.
+ * @param len the length of our list.
+ */
+int itemsprint(struct items *path, int len)
+{
+        struct items *temp = path;
+        for(int i = 0; i < len; i++){
+                path = path->next;
+        }
+        if(len <= 0){
+                printf("%s\n", path->entry);
+                return 0;
+        }
+        printf("%s->", temp->entry);
+        itemsprint(path, len - 1);
 }
