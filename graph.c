@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+enum color {WHITE = 0, GRAY, BLACK};
 
 struct edge {
         struct verticy *locs;
@@ -31,6 +32,7 @@ struct edge {
 struct verticy {
         char *key;
         struct edge *egdes;
+        int col;
 };
 
 /**
@@ -41,6 +43,18 @@ struct verticy {
 struct graph {
         struct verticy *vert;
         struct graph *next; 
+};
+
+
+struct items {
+        char *entry;
+        struct bdsf *next;
+};
+
+
+struct queue {
+        struct edge *loc;
+        struct queue *next;
 };
 
 
@@ -188,6 +202,7 @@ struct verticy *initvert(char *s)
         struct verticy *new = malloc(sizeof(struct verticy)); 
         new->key = s;
         new->egdes = NULL;
+        new->col = WHITE;
         return new;
 }
 
@@ -206,6 +221,54 @@ struct edge *initedge(struct verticy *connect)
         return new;
 }
 
+
+/**
+ * @brief resets the nodes colors after a search.
+ * 
+ * @param list the current list containing pointers to every node.
+ */
+void colorreset(struct graph *list)
+{
+        struct verticy *cur;
+        struct graph *nav = list;
+        while(nav != NULL){
+                cur = nav->vert;
+                cur->col = WHITE;
+                nav = nav->next;
+        }
+}
+
+
+/**
+ * @brief creates a new element for our queue.
+ * 
+ * @param spot the edge we are appending into the queue.
+ * @return the newly created queue element.
+ */
+struct queue *initqueue(struct edge *spot)
+{
+        struct queue *new = malloc(sizeof(struct queue));
+        new->loc = spot;
+        new->next = NULL;
+        return new;
+}
+
+
+
+/**
+ * @brief creates a new item for the array we will be printing out.
+ * 
+ * @param s the name of the veritcy our bfs lead to.
+ * @return the location of the newly created element.
+ */
+struct items *inititem(char *s)
+{
+        struct items *new = malloc(sizeof(struct items));
+        new->entry = s;
+        new->next = NULL;
+        return new;
+
+}
 
 /**
  * @brief creates a new veritcy for the graph. Expands the linked list at the
