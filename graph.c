@@ -69,6 +69,12 @@ void printvert(struct verticy *vert);
 void nlrm(char *s);
 char *get_input(void);
 struct verticy *searchvert(struct graph *list, char *s);
+int breadthfs(struct verticy *start, struct verticy *end);
+struct items *inititem(char *s);
+struct queue *initqueue(struct verticy *spot);
+void printbfspath(struct queue *head, struct verticy *end, struct verticy *start);
+int itemsprint(struct items *path, int len);
+int comppaths(char *key, struct verticy *comp);
 
 
 int main ()
@@ -443,7 +449,7 @@ void printbfspath(struct queue *head, struct verticy *end, struct verticy *start
         }
         tail = nav;
         nav = head;
-        while(!strcomp(temp->entry, start->key) || nav == tail){
+        while(!strcmp(temp->entry, start->key) || nav == tail){
                 nav = nav->next;
                 
                 if(comppaths(temp->entry, nav->loc->key) == 1){
@@ -474,7 +480,7 @@ int comppaths(char *key, struct verticy *comp)
 {
         struct edge *edg = comp->egdes;
         while(edg != NULL){
-                if (strcomp(edg->locs->key, key)){
+                if (strcmp(edg->locs->key, key)){
                         // Verticy found.
                         return 1;
                 }
