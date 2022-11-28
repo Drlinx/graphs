@@ -95,7 +95,7 @@ int main ()
         while(inputs != 'e'){
                 curen = list;
                 temp = NULL;
-                printf("What option would you like to perform(Use H for help): ");
+                printf("What option would you like to perform (Use H for help): ");
                 fgets(longinp,128,stdin);
                 inputs = longinp[0];
                 switch(inputs){
@@ -289,7 +289,7 @@ int createvert(struct graph *list, char *find)
 {
         struct graph *cur = list;
         while(cur->next != NULL){
-                if(strcmp(cur->vert->key, find)){
+                if(strcmp(cur->vert->key, find) == 0){
                         printf("Key already exists\n");
                         return 1;
                 }
@@ -388,7 +388,7 @@ struct verticy *searchvert(struct graph *list, char *s)
 {
         struct graph *cur = list;
         while(cur != NULL){
-                if(strcmp(cur->vert->key, s)){
+                if(strcmp(cur->vert->key, s) == 0){
                         return cur->vert;
                 }
                 cur = cur->next;
@@ -449,7 +449,7 @@ void printbfspath(struct queue *head, struct verticy *end, struct verticy *start
         }
         tail = nav;
         nav = head;
-        while(!strcmp(temp->entry, start->key) || nav == tail){
+        while(!strcmp(temp->entry, start->key) == 0 || nav == tail){
                 nav = nav->next;
                 
                 if(comppaths(temp->entry, nav->loc->key) == 1){
@@ -480,7 +480,7 @@ int comppaths(char *key, struct verticy *comp)
 {
         struct edge *edg = comp->egdes;
         while(edg != NULL){
-                if (strcmp(edg->locs->key, key)){
+                if (strcmp(edg->locs->key, key) == 0){
                         // Verticy found.
                         return 1;
                 }
