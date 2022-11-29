@@ -413,7 +413,19 @@ struct verticy *searchvert(struct graph *list, char *s)
 }
 
 
-
+/**
+ * @brief Does a breadth first search. Feeding in the two ends of the verticies.
+ * First it will create a queue of the verticies we have gone through. Going through
+ * changing the exploration status of the verticy. After chaing said status once it
+ * has been explored. We append the verticies based upon the edges of the current
+ * verticy we are looking at. Afterwards moving onto the next verticy currently
+ * within the queue. Afterwards we save the queue and work backwards to find the
+ * path we used to find where the end verticy was found.
+ * 
+ * @param start the node we are starting the search from.
+ * @param end the node we are ending the search from.
+ * @return the function status of the program.
+ */
 int breadthfs(struct verticy *start, struct verticy *end)
 {
         //Head of queue
