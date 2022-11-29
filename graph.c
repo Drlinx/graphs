@@ -168,6 +168,7 @@ int main ()
                                         printf("Error one of your inputs do not exist");
                                 } else {
                                         breadthfs(temp, extra);
+                                        colorreset(list);
                                 }
                                 break;
                         case('e'):
@@ -433,7 +434,7 @@ int breadthfs(struct verticy *start, struct verticy *end)
         //Tail of queue
         struct queue *cur = find;
         //Node we are performing the BFS on.
-        struct queue *inc = find;
+        struct queue *inc = cur;
         //For searching at the destinations.
         struct edge *edg;
         while(inc != NULL || inc->loc != end){
@@ -449,6 +450,9 @@ int breadthfs(struct verticy *start, struct verticy *end)
                 //Sets as explored.
                 inc->loc->col = EXPLORED;
                 inc = inc->next;
+                if (inc == NULL){
+                        break;
+                }
         }
         if (inc == NULL)
                 return 0;
