@@ -158,7 +158,17 @@ int main ()
                                 break;
                         case('B'):
                         case('b'):
-
+                                printf("Where are we starting our search: ");
+                                longinp = get_input();
+                                temp = searchvert(list, longinp);
+                                printf("What are we connecting it to: ");
+                                secinp = get_input();
+                                extra = searchvert(list, secinp);
+                                if(extra == NULL || temp == NULL){
+                                        printf("Error one of your inputs do not exist");
+                                } else {
+                                        breadthfs(temp, extra);
+                                }
                                 break;
                         case('e'):
                         case('E'):
@@ -409,7 +419,7 @@ int breadthfs(struct verticy *start, struct verticy *end)
         struct queue *inc = find;
         //For searching at the destinations.
         struct edge *edg;
-        while(inc != end || inc != NULL){
+        while(inc->loc != end || inc != NULL){
                 inc->loc->col = EXPLORING;
                 //Adds each element to the key if they are unexplored.
                 while(edg != NULL){
@@ -452,7 +462,7 @@ void printbfspath(struct queue *head, struct verticy *end, struct verticy *start
         while(!strcmp(temp->entry, start->key) == 0 || nav == tail){
                 nav = nav->next;
                 
-                if(comppaths(temp->entry, nav->loc->key) == 1){
+                if(comppaths(temp->entry, nav->loc) == 1){
                         temp->next = inititem(nav->loc->key);
                         temp = temp->next;
                         nav = head;
