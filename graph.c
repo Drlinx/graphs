@@ -75,7 +75,7 @@ struct queue *initqueue(struct verticy *spot);
 void printbfspath(struct queue *head, struct verticy *end, struct verticy *start);
 int itemsprint(struct items *path, int len);
 int comppaths(char *key, struct verticy *comp);
-
+void colorreset(struct graph *list);
 
 int main ()
 {
