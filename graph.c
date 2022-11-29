@@ -80,7 +80,7 @@ int comppaths(char *key, struct verticy *comp);
 int main ()
 {
         struct graph *list = malloc(sizeof(struct graph));
-        printf("Before getting started lets create an initial veritcy: \n");
+        printf("Before getting started lets create an initial veritcy: ");
         list->vert = initvert(get_input());
         list->next = NULL;
         char inputs = 'a';
@@ -146,7 +146,7 @@ int main ()
                                 break;
                         case('S'):
                         case('s'):
-                                printf("For the graph we are searching for.\n");
+                                printf("For the graph we are searching for: ");
                                 fgets(longinp, 128, stdin);
                                 nlrm(longinp);
                                 temp = searchvert(list, longinp);
@@ -180,8 +180,12 @@ int main ()
 }
 
 
+/**
+ * @brief A function that prints out the operations in the menu. 
+ */
 void help()
 {
+        printf("-----\n");
         printf("H) prints out a help menu\n");
         printf("A) Adds a new verticy to the graph\n");
         printf("N) adds a new edge to a requested verticy\n");
@@ -190,6 +194,7 @@ void help()
         printf("S) Prints a specificied verticy and its edges\n");
         printf("B) Does a breadth first search.\n");
         printf("E) Exits the program\n");
+        printf("-----\n");
 }
 
 
@@ -419,7 +424,7 @@ int breadthfs(struct verticy *start, struct verticy *end)
         struct queue *inc = find;
         //For searching at the destinations.
         struct edge *edg;
-        while(inc->loc != end || inc != NULL){
+        while(inc != NULL || inc->loc != end){
                 inc->loc->col = EXPLORING;
                 //Adds each element to the key if they are unexplored.
                 while(edg != NULL){
@@ -520,4 +525,5 @@ int itemsprint(struct items *path, int len)
         }
         printf("%s->", temp->entry);
         itemsprint(path, len - 1);
+        return 1;
 }
