@@ -110,12 +110,7 @@ int main ()
                                         curen = curen->next;
                                 }
                                 printf("What is the new verticy we are creating: ");
-                                longinp = get_input();
-                                if (searchvert(list, longinp) == NULL){
-                                        curen->next = initgraph(initvert(longinp));
-                                } else {
-                                        printf("Error | Verticy does not exist.\n");
-                                }
+                                curen->next = initgraph(initvert(get_input()));
                                 break;
                         case('N'):
                         case('n'):
