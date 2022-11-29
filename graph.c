@@ -91,6 +91,7 @@ int main ()
         struct verticy *temp, *extra;
         struct graph *curen;
         struct edge *use;
+        int x;
         help();
         while(inputs != 'e'){
                 curen = list;
@@ -109,7 +110,12 @@ int main ()
                                         curen = curen->next;
                                 }
                                 printf("What is the new verticy we are creating: ");
-                                curen->next = initgraph(initvert(get_input()));
+                                longinp = get_input();
+                                if (searchvert(list, longinp) == NULL){
+                                        curen->next = initgraph(initvert(longinp));
+                                } else {
+                                        printf("Error | Verticy does not exist.\n");
+                                }
                                 break;
                         case('N'):
                         case('n'):
@@ -165,9 +171,12 @@ int main ()
                                 secinp = get_input();
                                 extra = searchvert(list, secinp);
                                 if(extra == NULL || temp == NULL){
-                                        printf("Error one of your inputs do not exist");
+                                        printf("Error one of your inputs do not exist\n");
                                 } else {
-                                        breadthfs(temp, extra);
+                                        x = breadthfs(temp, extra);
+                                        // If you give it the same verticy.
+                                        if (x == 0)
+                                                printf("%s->%s", temp->key,temp->key);
                                         colorreset(list);
                                 }
                                 break;
@@ -371,7 +380,7 @@ void nlrm(char *s)
 {
         for(int i = 0; s[i] != '\0'; i++){
                 if(s[i] == '\n'){
-                        s[i] == '\0';
+                        s[i] = '\0';
                         break;
                 }
         }
@@ -439,6 +448,7 @@ int breadthfs(struct verticy *start, struct verticy *end)
         struct edge *edg;
         while(inc != NULL || inc->loc != end){
                 inc->loc->col = EXPLORING;
+                edg = inc->loc->egdes;
                 //Adds each element to the key if they are unexplored.
                 while(edg != NULL){
                         if(edg->locs->col == UNEXPLORED){
@@ -454,7 +464,7 @@ int breadthfs(struct verticy *start, struct verticy *end)
                         break;
                 }
         }
-        if (inc == NULL)
+        if (find->next == NULL)
                 return 0;
         printbfspath(find, end, start);
         return 1;
@@ -480,15 +490,16 @@ void printbfspath(struct queue *head, struct verticy *end, struct verticy *start
         }
         tail = nav;
         nav = head;
-        while(!strcmp(temp->entry, start->key) == 0 || nav == tail){
-                nav = nav->next;
+        while(!strcmp(temp->entry, start->key) == 0 && nav != NULL){
                 
                 if(comppaths(temp->entry, nav->loc) == 1){
                         temp->next = inititem(nav->loc->key);
                         temp = temp->next;
                         nav = head;
                 }
+                nav = nav->next;
         }
+        temp->next = inititem(start->key);
         temp = path;
         // Finds the length of the list;
         int i = 0;
